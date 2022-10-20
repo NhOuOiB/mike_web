@@ -33,13 +33,14 @@ const Todolist = () => {
         </button>
       </div>
       <div className="my-2 mx-3 ">
-        {todoList.map((v, i) => {
-          return (
-            <div key={i} className="border rounded p-1 my-2">
-              {v}
-            </div>
-          )
-        })}
+        {todoList &&
+          todoList.map((v, i) => {
+            return (
+              <div key={i} className="border rounded p-1 my-2">
+                {v}
+              </div>
+            )
+          })}
       </div>
     </div>
   )
