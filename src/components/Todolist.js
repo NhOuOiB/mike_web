@@ -80,10 +80,10 @@ const Todolist = () => {
             >
               {todoList.map((v, i) => {
                 return (
-                  <Draggable draggableId={v.id} index={i}>
+                  <Draggable draggableId={`${v.id}`} index={i} key={v.id}>
                     {(provided) => (
                       <div
-                        key={v.id}
+                        
                         className="border rounded p-1 my-2"
                         ref={provided.innerRef}
                         {...provided.draggableProps}
