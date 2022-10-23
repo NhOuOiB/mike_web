@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { Draggable } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 const Todolist = () => {
   const [newTodo, setNewTodo] = useState('')
-  const [todo, setTodo] = useState([])
-  let todoList = JSON.parse(localStorage.getItem('todo'))
+  const [todoList, setTodoList] = useState([])
+  useEffect(() => {
+    let localTodo = JSON.parse(localStorage.getItem('todo'))
+    setTodoList(localTodo)
+  }, [])
+  const addTodoHandler = () => {
+    if (newTodo === '') return
+    let newTodoList = [...todoList, newTodo]
+    setNewTodo('')
+    setTodoList(newTodoList)
+    localStorage.setItem('todo', JSON.stringify(newTodoList))
+  }
   return (
     <div className=" max-w-xl mx-auto">
       <div className=" border-2 px-2 rounded-2xl border-black font-semibold my-2 w-fit mx-auto">
@@ -19,15 +29,13 @@ const Todolist = () => {
           onChange={(e) => {
             setNewTodo(e.target.value)
           }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') addTodoHandler()
+          }}
         />
         <button
           className="border p-1 hover:border-cyan-600 hover:text-cyan-600"
-          onClick={() => {
-            let newTodoList = [...todo, newTodo]
-            setNewTodo('')
-            setTodo(newTodoList)
-            localStorage.setItem('todo', JSON.stringify(newTodoList))
-          }}
+          onClick={addTodoHandler}
         >
           Enter
         </button>
