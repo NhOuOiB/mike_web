@@ -22,6 +22,9 @@ const Todo = ({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          onDoubleClick={() => {
+            editTodoHandler(v.id)
+          }}
         >
           <div className="flex justify-between items-center">
             <div></div>
