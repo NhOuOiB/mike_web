@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { v4 as uuidv4 } from 'uuid'
+import { IoIosCloseCircleOutline } from 'react-icons/io'
 
 const Todolist = () => {
   const [newTodo, setNewTodo] = useState('')
   const [todoList, setTodoList] = useState([])
+  // get todo
   useEffect(() => {
     let localTodo = localStorage.getItem('todo')
     if (localTodo) setTodoList(JSON.parse(localTodo))
   }, [])
+  // add todo
   const addTodoHandler = () => {
     if (newTodo === '') return
     let todo = { id: uuidv4(), content: newTodo }
@@ -17,9 +20,14 @@ const Todolist = () => {
     setTodoList(newTodoList)
     localStorage.setItem('todo', JSON.stringify(newTodoList))
   }
-
+  // delete todo
+  const delTodoHandler = (v) => {
+    let newTodoList = todoList.filter((v2) => v.id !== v2.id)
+    setTodoList(newTodoList)
+    localStorage.setItem('todo', JSON.stringify(newTodoList))
+  }
+  // dnd
   const onDragEnd = (e) => {
-    console.log(e)
     const { source, destination } = e
     if (!destination) return
     if (
@@ -83,13 +91,23 @@ const Todolist = () => {
                   <Draggable draggableId={`${v.id}`} index={i} key={v.id}>
                     {(provided) => (
                       <div
-                        
                         className="border rounded p-1 my-2"
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                       >
-                        {v.content}
+                        <div className="flex justify-between items-center">
+                          <p>{v.content}</p>
+                          <div
+                            className="cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              delTodoHandler(v)
+                            }}
+                          >
+                            <IoIosCloseCircleOutline />
+                          </div>
+                        </div>
                       </div>
                     )}
                   </Draggable>
