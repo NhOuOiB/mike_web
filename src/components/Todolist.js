@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { v4 as uuidv4 } from 'uuid'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
-
+import { FiEdit2 } from 'react-icons/fi'
+import Todo from './Todo'
 const Todolist = () => {
   const [newTodo, setNewTodo] = useState('')
   const [todoList, setTodoList] = useState([])
+  const [editList, setEditList] = useState([])
   // get todo
   useEffect(() => {
     let localTodo = localStorage.getItem('todo')
@@ -19,6 +21,14 @@ const Todolist = () => {
     setNewTodo('')
     setTodoList(newTodoList)
     localStorage.setItem('todo', JSON.stringify(newTodoList))
+  }
+  // edit todo
+  const editTodoHandler = (v) => {
+    if (editList.includes(v)) {
+      return setEditList(editList.filter((v2) => v !== v2))
+    }
+    let newEditList = [...editList, v]
+    setEditList(newEditList)
   }
   // delete todo
   const delTodoHandler = (v) => {
@@ -79,7 +89,7 @@ const Todolist = () => {
             Enter
           </button>
         </div>
-        <Droppable droppableId="td">
+        <Droppable droppableId="todo">
           {(provided) => (
             <div
               className="my-2 mx-3 "
@@ -88,29 +98,17 @@ const Todolist = () => {
             >
               {todoList.map((v, i) => {
                 return (
-                  <Draggable draggableId={`${v.id}`} index={i} key={v.id}>
-                    {(provided) => (
-                      <div
-                        className="border rounded p-1 my-2"
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <div className="flex justify-between items-center">
-                          <p>{v.content}</p>
-                          <div
-                            className="cursor-pointer"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              delTodoHandler(v)
-                            }}
-                          >
-                            <IoIosCloseCircleOutline />
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </Draggable>
+                  <Todo
+                    i={i}
+                    v={v}
+                    key={v.id}
+                    todoList={todoList}
+                    setTodoList={setTodoList}
+                    editList={editList}
+                    setEditList={setEditList}
+                    editTodoHandler={editTodoHandler}
+                    delTodoHandler={delTodoHandler}
+                  ></Todo>
                 )
               })}
               {provided.placeholder}
