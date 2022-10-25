@@ -7,10 +7,13 @@ const Todolist = () => {
   const [newTodo, setNewTodo] = useState('')
   const [todoList, setTodoList] = useState([])
   const [editList, setEditList] = useState([])
+  const [fin, setFin] = useState([])
   // get todo
   useEffect(() => {
     let localTodo = localStorage.getItem('todo')
     if (localTodo) setTodoList(JSON.parse(localTodo))
+    let localFin = localStorage.getItem('fin')
+    if (localFin) setFin(JSON.parse(localFin))
   }, [])
   // add todo
   const addTodoHandler = () => {
@@ -46,17 +49,37 @@ const Todolist = () => {
       return
     let newTodo = [...todoList]
     let add = newTodo[source.index]
-    // if (destination.droppableId === 'todoFinList') {
-    //   // DRAG TO FINISH
-    //   newTodo = newTodo.map((todo) => {
-    //     if (todo.id === add.id) return { ...todo, status: true }
-    //     return todo
-    //   })
-    // } else {
-    //   // SORT TODOLIST
-    //   newTodo.splice(source.index, 1)
-    //   newTodo.splice(destination.index, 0, add)
-    // }
+    let newFin = [...fin]
+    let good = newFin[source.index]
+    // drag to fin
+    if (destination.droppableId === 'fin') {
+      // fin to fin
+      if (source.droppableId === 'fin') {
+        newFin.splice(source.index, 1)
+        newFin.splice(destination.index, 0, good)
+        console.log(newFin)
+        setFin(newFin)
+        localStorage.setItem('fin', JSON.stringify(newFin))
+        return
+      }
+      newTodo.splice(source.index, 1)
+      newFin.splice(destination.index, 0, add)
+      setFin(newFin)
+      localStorage.setItem('fin', JSON.stringify(newFin))
+      // let newTodoList = todoList.filter((v) => v.id !== add.id)
+      setTodoList(newTodo)
+      localStorage.setItem('todo', JSON.stringify(newTodo))
+      return
+    }
+    if (source.droppableId === 'fin') {
+      newFin.splice(source.index, 1)
+      newTodo.splice(destination.index, 0, good)
+      setTodoList(newTodo)
+      localStorage.setItem('todo', JSON.stringify(newTodo))
+      setFin(newFin)
+      localStorage.setItem('fin', JSON.stringify(newFin))
+      return
+    }
     newTodo.splice(source.index, 1)
     newTodo.splice(destination.index, 0, add)
     setTodoList(newTodo)
@@ -74,7 +97,7 @@ const Todolist = () => {
             className="border focus:outline-none p-1 focus:border-cyan-600 mr-2"
             placeholder="type something todo"
             value={newTodo}
-            maxLength={50}
+            maxLength={20}
             onChange={(e) => {
               setNewTodo(e.target.value)
             }}
@@ -96,6 +119,9 @@ const Todolist = () => {
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
+              <h3 className="text-2xl font-semibold text-left border-l-4 border-cyan-600 px-2">
+                Unfinished
+              </h3>
               {todoList.map((v, i) => {
                 return (
                   <Todo
@@ -109,6 +135,36 @@ const Todolist = () => {
                     editTodoHandler={editTodoHandler}
                     delTodoHandler={delTodoHandler}
                   ></Todo>
+                )
+              })}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+        <Droppable droppableId="fin">
+          {(provided) => (
+            <div
+              className="my-2 mx-3 "
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              <h3 className="text-2xl font-semibold text-left border-l-4 border-cyan-600 px-2">
+                Finished
+              </h3>
+              {fin.map((v, i) => {
+                return (
+                  <Draggable draggableId={`${v.id}`} index={i} key={v.id}>
+                    {(provided) => (
+                      <div
+                        className="border rounded p-1 my-2 hover:border-cyan-600 hover:text-cyan-600 active:border-cyan-600 active:text-cyan-600 text-[#ccc]"
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <p className="">{v.content}</p>
+                      </div>
+                    )}
+                  </Draggable>
                 )
               })}
               {provided.placeholder}

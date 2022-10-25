@@ -26,12 +26,12 @@ const Todo = ({
             editTodoHandler(v.id)
           }}
         >
-          <div className="flex justify-between items-center">
+          <div className="grid grid-cols-3">
             <div></div>
             {editList.includes(v.id) ? (
               <input
                 type="text"
-                className="border focus:outline-none focus:border-cyan-600 px-1"
+                className="border focus:outline-none focus:border-cyan-600 px-1 text-[#000]"
                 onChange={(e) => setEdit(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && edit.trim()) {
@@ -47,12 +47,12 @@ const Todo = ({
                   }
                 }}
                 value={edit}
-                maxLength={50}
+                maxLength={20}
               />
             ) : (
               <p>{v.content}</p>
             )}
-            <div className="flex gap-1">
+            <div className="flex gap-1 justify-end items-center">
               <div
                 className="cursor-pointer"
                 onClick={(e) => {
