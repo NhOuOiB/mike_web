@@ -38,9 +38,26 @@ const Todolist = () => {
     setTodoList(newTodoList)
     localStorage.setItem('todo', JSON.stringify(newTodoList))
   }
+
   // dnd
   const onDragEnd = (e) => {
     const { source, destination } = e
+    // same droppableId
+    const dragToSameId = (newList, item, set, localName) => {
+      newList.splice(source.index, 1)
+      newList.splice(destination.index, 0, item)
+      set(newList)
+      localStorage.setItem(localName, JSON.stringify(newList))
+    }
+    // different droppableId
+    const dragToOtherId = (sourceList, destinationList, item) => {
+      sourceList.splice(source.index, 1)
+      destinationList.splice(destination.index, 0, item)
+      setFin(newFin)
+      localStorage.setItem('fin', JSON.stringify(newFin))
+      setTodoList(newTodo)
+      localStorage.setItem('todo', JSON.stringify(newTodo))
+    }
     if (!destination) return
     if (
       destination.index === source.index &&
@@ -55,35 +72,17 @@ const Todolist = () => {
     if (destination.droppableId === 'fin') {
       // fin to fin
       if (source.droppableId === 'fin') {
-        newFin.splice(source.index, 1)
-        newFin.splice(destination.index, 0, good)
-        console.log(newFin)
-        setFin(newFin)
-        localStorage.setItem('fin', JSON.stringify(newFin))
+        dragToSameId(newFin, good, setFin, 'fin')
         return
       }
-      newTodo.splice(source.index, 1)
-      newFin.splice(destination.index, 0, add)
-      setFin(newFin)
-      localStorage.setItem('fin', JSON.stringify(newFin))
-      // let newTodoList = todoList.filter((v) => v.id !== add.id)
-      setTodoList(newTodo)
-      localStorage.setItem('todo', JSON.stringify(newTodo))
+      dragToOtherId(newTodo, newFin, add)
       return
     }
     if (source.droppableId === 'fin') {
-      newFin.splice(source.index, 1)
-      newTodo.splice(destination.index, 0, good)
-      setTodoList(newTodo)
-      localStorage.setItem('todo', JSON.stringify(newTodo))
-      setFin(newFin)
-      localStorage.setItem('fin', JSON.stringify(newFin))
+      dragToOtherId(newFin, newTodo, good)
       return
     }
-    newTodo.splice(source.index, 1)
-    newTodo.splice(destination.index, 0, add)
-    setTodoList(newTodo)
-    localStorage.setItem('todo', JSON.stringify(newTodo))
+    dragToSameId(newTodo, add, setTodoList, 'todo')
   }
   return (
     <DragDropContext onDragEnd={onDragEnd}>
