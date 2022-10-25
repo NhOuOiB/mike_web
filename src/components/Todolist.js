@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { v4 as uuidv4 } from 'uuid'
 import Todo from './Todo'
+import { DatePicker, Space } from 'antd'
+
 
 const Todolist = () => {
   const [newTodo, setNewTodo] = useState('')
@@ -104,6 +106,9 @@ const Todolist = () => {
               if (e.key === 'Enter') addTodoHandler()
             }}
           />
+          <Space direction="vertical" size={12}>
+            <DatePicker showTime />
+          </Space>
           <button
             className="border p-1 hover:border-cyan-600 hover:text-cyan-600"
             onClick={addTodoHandler}
@@ -143,7 +148,7 @@ const Todolist = () => {
         <Droppable droppableId="fin">
           {(provided) => (
             <div
-              className="my-2 mx-3 "
+              className="my-2 mx-3 h-64"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
@@ -155,7 +160,7 @@ const Todolist = () => {
                   <Draggable draggableId={`${v.id}`} index={i} key={v.id}>
                     {(provided) => (
                       <div
-                        className="border rounded p-1 my-2 hover:border-cyan-600 hover:text-cyan-600 active:border-cyan-600 active:text-cyan-600 text-[#ccc]"
+                        className="border rounded p-1 my-2 hover:border-cyan-600 hover:text-cyan-600 active:border-cyan-600 active:text-cyan-600 text-[#ccc] "
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}

@@ -31,7 +31,7 @@ const Todo = ({
             {editList.includes(v.id) ? (
               <input
                 type="text"
-                className="border focus:outline-none focus:border-cyan-600 px-1 text-[#000]"
+                className="border focus:outline-none focus:border-cyan-600 px-1 text-[#000] text-center "
                 onChange={(e) => setEdit(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && edit.trim()) {
