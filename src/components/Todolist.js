@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { v4 as uuidv4 } from 'uuid'
-import { IoIosCloseCircleOutline } from 'react-icons/io'
-import { FiEdit2 } from 'react-icons/fi'
 import Todo from './Todo'
+
 const Todolist = () => {
   const [newTodo, setNewTodo] = useState('')
   const [todoList, setTodoList] = useState([])
@@ -75,6 +74,7 @@ const Todolist = () => {
             className="border focus:outline-none p-1 focus:border-cyan-600 mr-2"
             placeholder="type something todo"
             value={newTodo}
+            maxLength={50}
             onChange={(e) => {
               setNewTodo(e.target.value)
             }}

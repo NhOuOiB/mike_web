@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
 import { FiEdit2 } from 'react-icons/fi'
@@ -31,7 +31,7 @@ const Todo = ({
             {editList.includes(v.id) ? (
               <input
                 type="text"
-                className="border focus:outline-none focus:border-cyan-600 "
+                className="border focus:outline-none focus:border-cyan-600 px-1"
                 onChange={(e) => setEdit(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && edit.trim()) {
@@ -47,6 +47,7 @@ const Todo = ({
                   }
                 }}
                 value={edit}
+                maxLength={50}
               />
             ) : (
               <p>{v.content}</p>
