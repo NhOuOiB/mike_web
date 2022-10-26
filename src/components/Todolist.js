@@ -11,6 +11,9 @@ const Todolist = () => {
   const [editList, setEditList] = useState([])
   const [fin, setFin] = useState([])
   const [deadline, setDeadline] = useState('')
+  const [hover, setHover] = useState(false)
+  const now = Date.now()
+
   // get todo
   useEffect(() => {
     let localTodo = localStorage.getItem('todo')
@@ -21,9 +24,11 @@ const Todolist = () => {
   // add todo
   const addTodoHandler = () => {
     if (newTodo === '') return
+    if (deadline - now <= 0) return
     let todo = { id: uuidv4(), content: newTodo, deadline: deadline }
     let newTodoList = [...todoList, todo]
     setNewTodo('')
+    setDeadline('')
     setTodoList(newTodoList)
     localStorage.setItem('todo', JSON.stringify(newTodoList))
   }
@@ -129,6 +134,12 @@ const Todolist = () => {
               className="my-2 mx-3 "
               ref={provided.innerRef}
               {...provided.droppableProps}
+              onMouseOver={() => {
+                setHover(true)
+              }}
+              onMouseOut={() => {
+                setHover(false)
+              }}
             >
               <h3 className="text-2xl font-semibold text-left border-l-4 border-cyan-600 px-2">
                 Unfinished
@@ -145,6 +156,7 @@ const Todolist = () => {
                     setEditList={setEditList}
                     editTodoHandler={editTodoHandler}
                     delTodoHandler={delTodoHandler}
+                    hover={hover}
                   ></Todo>
                 )
               })}
