@@ -36,10 +36,10 @@ const Todolist = () => {
     setEditList(newEditList)
   }
   // delete todo
-  const delTodoHandler = (v) => {
-    let newTodoList = todoList.filter((v2) => v.id !== v2.id)
-    setTodoList(newTodoList)
-    localStorage.setItem('todo', JSON.stringify(newTodoList))
+  const delTodoHandler = (v, List, setList, localName) => {
+    let newList = List.filter((v2) => v.id !== v2.id)
+    setList(newList)
+    localStorage.setItem(localName, JSON.stringify(newList))
   }
 
   // dnd
@@ -179,7 +179,7 @@ const Todolist = () => {
                             className="cursor-pointer"
                             onClick={(e) => {
                               e.stopPropagation()
-                              delTodoHandler(v)
+                              delTodoHandler(v, fin, setFin, 'fin')
                             }}
                           >
                             <IoIosCloseCircleOutline />

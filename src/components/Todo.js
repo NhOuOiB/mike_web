@@ -80,7 +80,7 @@ const Todo = ({
                 className="cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation()
-                  delTodoHandler(v)
+                  delTodoHandler(v, todoList, setTodoList, 'todo')
                 }}
               >
                 <IoIosCloseCircleOutline />
