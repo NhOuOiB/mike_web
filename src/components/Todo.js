@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
 import { FiEdit2 } from 'react-icons/fi'
-
+import { Col, Row, Statistic } from 'antd'
+const { Countdown } = Statistic
+const deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30 // Moment is also OK
 const Todo = ({
   v,
   i,
@@ -27,7 +29,19 @@ const Todo = ({
           }}
         >
           <div className="grid grid-cols-3">
-            <div></div>
+            <div className="h-fit">
+              {v.deadline !== '' ? (
+                <Row>
+                  <Countdown
+                    value={v.deadline}
+                    valueStyle={{ fontSize: 0 }}
+                    format="D 天 H 时 m 分 s 秒"
+                  />
+                </Row>
+              ) : (
+                ''
+              )}
+            </div>
             {editList.includes(v.id) ? (
               <input
                 type="text"
@@ -50,7 +64,7 @@ const Todo = ({
                 maxLength={20}
               />
             ) : (
-              <p>{v.content}</p>
+              <p className="my-0">{v.content}</p>
             )}
             <div className="flex gap-1 justify-end items-center">
               <div

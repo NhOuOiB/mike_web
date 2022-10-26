@@ -3,13 +3,14 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { v4 as uuidv4 } from 'uuid'
 import Todo from './Todo'
 import { DatePicker, Space } from 'antd'
-
+import { IoIosCloseCircleOutline } from 'react-icons/io'
 
 const Todolist = () => {
   const [newTodo, setNewTodo] = useState('')
   const [todoList, setTodoList] = useState([])
   const [editList, setEditList] = useState([])
   const [fin, setFin] = useState([])
+  const [deadline, setDeadline] = useState('')
   // get todo
   useEffect(() => {
     let localTodo = localStorage.getItem('todo')
@@ -20,7 +21,7 @@ const Todolist = () => {
   // add todo
   const addTodoHandler = () => {
     if (newTodo === '') return
-    let todo = { id: uuidv4(), content: newTodo }
+    let todo = { id: uuidv4(), content: newTodo, deadline: deadline }
     let newTodoList = [...todoList, todo]
     setNewTodo('')
     setTodoList(newTodoList)
@@ -106,8 +107,14 @@ const Todolist = () => {
               if (e.key === 'Enter') addTodoHandler()
             }}
           />
-          <Space direction="vertical" size={12}>
-            <DatePicker showTime />
+          <Space direction="vertical" className="mr-2">
+            <DatePicker
+              showTime
+              onChange={(d, dateStrings) => {
+                setDeadline(new Date(dateStrings).getTime())
+                console.log(d)
+              }}
+            />
           </Space>
           <button
             className="border p-1 hover:border-cyan-600 hover:text-cyan-600"
@@ -160,12 +167,24 @@ const Todolist = () => {
                   <Draggable draggableId={`${v.id}`} index={i} key={v.id}>
                     {(provided) => (
                       <div
-                        className="border rounded p-1 my-2 hover:border-cyan-600 hover:text-cyan-600 active:border-cyan-600 active:text-cyan-600 text-[#ccc] "
+                        className="border rounded p-1  my-2 hover:border-cyan-600 hover:text-cyan-600 active:border-cyan-600 active:text-cyan-600 text-[#ccc] grid grid-cols-3"
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                       >
-                        <p className="">{v.content}</p>
+                        <div></div>
+                        <p className="my-0">{v.content}</p>
+                        <div className="flex gap-1 justify-end items-center">
+                          <div
+                            className="cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              delTodoHandler(v)
+                            }}
+                          >
+                            <IoIosCloseCircleOutline />
+                          </div>
+                        </div>
                       </div>
                     )}
                   </Draggable>
