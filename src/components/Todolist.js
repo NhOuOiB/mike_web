@@ -24,11 +24,11 @@ const Todolist = () => {
   // add todo
   const addTodoHandler = () => {
     if (newTodo === '') return
-    if (deadline - now <= 0) return
-    let todo = { id: uuidv4(), content: newTodo, deadline: deadline }
+    if (deadline && deadline - now <= 0) return
+    let todo = { id: uuidv4(), content: newTodo, deadline }
     let newTodoList = [...todoList, todo]
     setNewTodo('')
-    setDeadline('')
+    // setDeadline('')
     setTodoList(newTodoList)
     localStorage.setItem('todo', JSON.stringify(newTodoList))
   }
@@ -94,14 +94,14 @@ const Todolist = () => {
   }
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className=" max-w-xl mx-auto">
-        <div className=" border-2 px-2 rounded-2xl border-black font-semibold my-2 w-fit mx-auto">
+      <div className=" max-w-lg mx-auto text-sm pt-5">
+        <div className=" border-2 px-2 rounded-2xl border-black font-semibold mb-5 w-fit mx-auto">
           Todolist
         </div>
-        <div className="">
+        <div className="mx-3 my-5 flex justify-around sm:gap-0 gap-1">
           <input
             type="text"
-            className="border focus:outline-none p-1 focus:border-cyan-600 mr-2"
+            className="border focus:outline-none p-1 focus:border-cyan-600 w-5/12"
             placeholder="type something todo"
             value={newTodo}
             maxLength={20}
@@ -112,17 +112,16 @@ const Todolist = () => {
               if (e.key === 'Enter') addTodoHandler()
             }}
           />
-          <Space direction="vertical" className="mr-2">
+          <Space direction="vertical" className="w-5/12">
             <DatePicker
               showTime
               onChange={(d, dateStrings) => {
                 setDeadline(new Date(dateStrings).getTime())
-                console.log(d)
               }}
             />
           </Space>
           <button
-            className="border p-1 hover:border-cyan-600 hover:text-cyan-600"
+            className="border py-1 px-2 hover:border-cyan-600 hover:text-cyan-600 w-auto"
             onClick={addTodoHandler}
           >
             Enter
@@ -131,7 +130,7 @@ const Todolist = () => {
         <Droppable droppableId="todo">
           {(provided) => (
             <div
-              className="my-2 mx-3 "
+              className="my-3 mx-3 "
               ref={provided.innerRef}
               {...provided.droppableProps}
               onMouseOver={() => {
@@ -167,7 +166,7 @@ const Todolist = () => {
         <Droppable droppableId="fin">
           {(provided) => (
             <div
-              className="my-2 mx-3 h-64"
+              className="my-3 mx-3 h-64"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >

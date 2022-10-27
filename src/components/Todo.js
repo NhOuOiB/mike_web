@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
 import { FiEdit2 } from 'react-icons/fi'
-import { Col, Row, Statistic } from 'antd'
+import { Row, Statistic } from 'antd'
 const { Countdown } = Statistic
-const deadline = Date.now() + 1000 * 60 * 60 * 12
 const Todo = ({
   v,
   i,
@@ -25,18 +24,14 @@ const Todo = ({
     if (v.deadline - now <= 1000 * 60 * 60 * 12) setClose(true)
     if (v.deadline - now <= 1000 * 60 * 60 * 24) setDay(true)
   }, [now, v.deadline, close, day])
-  console.log(day)
   return (
     <Draggable draggableId={`${v.id}`} index={i} key={v.id}>
       {(provided) => (
         <div
           className={`border rounded p-1 my-2 hover:border-cyan-600 hover:text-cyan-600 active:border-cyan-600 active:text-cyan-600 ${
-            v.deadline !== '' && v.deadline !== null ? 'border-slate-500' : ''
-          } ${
-            v.deadline !== '' &&
-            close &&
-            v.deadline !== null &&
-            'border-red-500'
+            v.deadline ? 'border-slate-500' : ''
+          } ${v.deadline && close && 'border-red-500'} ${
+            v.deadline && v.deadline - now < 0 && 'border-red-900 text-red-900'
           }`}
           ref={provided.innerRef}
           {...provided.draggableProps}
@@ -45,72 +40,82 @@ const Todo = ({
             editTodoHandler(v.id)
           }}
         >
-          <div className="grid grid-cols-3">
+          <div className="grid grid-cols-3 sm:gap-1 gap-2 ">
             <div className="h-fit">
-              {v.deadline !== '' && v.deadline !== null ? (
+              {v.deadline ? (
                 <>
-                  {hover ? (
-                    <div className="opacity-100 transition duration-500">
-                      <Row>
-                        <Countdown
-                          value={v.deadline}
-                          valueStyle={{
-                            fontSize: 0,
-                            color: close ? 'red' : '',
-                          }}
-                          className="hover:text-cyan-600"
-                          format={
-                            day ? ' H 時 m 分 s 秒' : 'D 天 H 時 m 分 s 秒'
-                          }
-                        />
-                      </Row>
-                    </div>
+                  {v.deadline - now > 0 ? (
+                    <>
+                      {hover ? (
+                        <div className="opacity-100 transition duration-500 ">
+                          <Row>
+                            <Countdown
+                              value={v.deadline}
+                              valueStyle={{
+                                textAlign: 'start',
+                                minWidth: 136,
+                                fontSize: 14,
+                                color: close ? 'red' : '',
+                              }}
+                              format={
+                                day ? 'H 時 m 分 s 秒' : 'D 天 H 時 m 分 s 秒'
+                              }
+                            />
+                          </Row>
+                        </div>
+                      ) : (
+                        <div className="opacity-0 transition duration-500">
+                          <Row>
+                            <Countdown
+                              value={v.deadline}
+                              valueStyle={{
+                                textAlign: 'start',
+                                minWidth: 136,
+                                fontSize: 14,
+                                color: close ? 'red' : '',
+                              }}
+                              format={
+                                day ? 'H 時 m 分 s 秒' : 'D 天 H 時 m 分 s 秒'
+                              }
+                            />
+                          </Row>
+                        </div>
+                      )}
+                    </>
                   ) : (
-                    <div className="opacity-0 transition duration-500">
-                      <Row>
-                        <Countdown
-                          value={v.deadline}
-                          valueStyle={{
-                            fontSize: 0,
-                            color: close ? 'red' : '',
-                          }}
-                          className="hover:text-cyan-600"
-                          format={
-                            day ? ' H 時 m 分 s 秒' : 'D 天 H 時 m 分 s 秒'
-                          }
-                        />
-                      </Row>
-                    </div>
+                    <div className="text-start text-red-800 ">已超時</div>
                   )}
                 </>
               ) : (
                 ''
               )}
             </div>
-            {editList.includes(v.id) ? (
-              <input
-                type="text"
-                className="border focus:outline-none focus:border-cyan-600 px-1 text-[#000] text-center "
-                onChange={(e) => setEdit(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && edit.trim()) {
-                    let newTodoList = [...todoList].map((v2) => {
-                      if (v.id === v2.id) {
-                        return { ...v2, content: edit }
-                      }
-                      return v2
-                    })
-                    setTodoList(newTodoList)
-                    localStorage.setItem('todo', JSON.stringify(newTodoList))
-                    setEditList(editList.filter((v2) => v.id !== v2))
-                  }
-                }}
-                value={edit}
-                maxLength={20}
-              />
-            ) : (
-              <p className="my-0">{v.content}</p>
-            )}
+            <div className="flex justify-center items-center">
+              {editList.includes(v.id) ? (
+                <input
+                  type="text"
+                  className="border focus:outline-none focus:border-cyan-600 px-1 text-[#000] text-center w-full"
+                  onChange={(e) => setEdit(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && edit.trim()) {
+                      let newTodoList = [...todoList].map((v2) => {
+                        if (v.id === v2.id) {
+                          return { ...v2, content: edit }
+                        }
+                        return v2
+                      })
+                      setTodoList(newTodoList)
+                      localStorage.setItem('todo', JSON.stringify(newTodoList))
+                      setEditList(editList.filter((v2) => v.id !== v2))
+                    }
+                  }}
+                  value={edit}
+                  maxLength={20}
+                />
+              ) : (
+                <p className="my-0">{v.content}</p>
+              )}
+            </div>
             <div className="flex gap-1 justify-end items-center">
               <div
                 className="cursor-pointer"
