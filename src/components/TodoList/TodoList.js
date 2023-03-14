@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { v4 as uuidv4 } from 'uuid'
-import Todo from './Todo'
+import Todo from '../Todo/Todo'
 import { DatePicker, Space } from 'antd'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
 
