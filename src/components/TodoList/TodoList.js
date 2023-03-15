@@ -96,7 +96,7 @@ const Todolist = () => {
     <DragDropContext onDragEnd={onDragEnd}>
       <div className=" max-w-lg mx-auto text-sm pt-5">
         <div className=" border-2 px-2 rounded-2xl border-black font-semibold mb-5 w-fit mx-auto">
-          Todolist
+          TodoList
         </div>
         <div className="mx-3 my-5 flex justify-around sm:gap-0 gap-1">
           <input
