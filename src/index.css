@@ -8,3 +8,15 @@
   box-sizing: border-box;
   /* font-size: 14px; */
 }
+ ::-webkit-scrollbar {
+  /* 滾動條的寬度 */
+  width: 10px;         
+  height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+  /* 滾動條的設定 */
+  background-color: #ffffff;
+  background-clip: padding-box;
+  border: 1px solid #444;
+  border-radius: 5px;
+  }
