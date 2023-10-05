@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <Nav />
-      <BrowserRouter>
+      <BrowserRouter basename={'/mike_web'}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/todolist" element={<TodoList />} />
