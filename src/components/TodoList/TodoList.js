@@ -184,7 +184,7 @@ const Todolist = () => {
                         {...provided.dragHandleProps}
                       >
                         <div></div>
-                        <p className="my-0">{v.content}</p>
+                        <p className="m-auto">{v.content}</p>
                         <div className="flex gap-1 justify-end items-center">
                           <div
                             className="cursor-pointer"
