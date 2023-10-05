@@ -5,8 +5,8 @@ const Nav = () => {
     <div>
       <nav className="absolute flex sm:justify-center space-x-4">
         {[
-          ['Home', '/mike_web/'],
-          ['TodoList', '/mike_web/todolist'],
+          ['Home', '/'],
+          ['TodoList', '/todolist'],
         ].map(([title, url]) => (
           <a
             href={url}
