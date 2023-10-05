@@ -1,6 +1,6 @@
 import React from 'react'
 import './_home.scss'
-const home = () => {
+const Home = () => {
   return (
     <>
       <div className="flex justify-center items-center h-screen">
@@ -13,4 +13,4 @@ const home = () => {
   )
 }
 
-export default home
+export default Home
