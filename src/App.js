@@ -8,9 +8,9 @@ function App() {
   return (
     <>
       <Nav />
-      <BrowserRouter basename={'/'}>
+      <BrowserRouter basename={'/mike_web'}>
         <Routes>
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/todolist" element={<TodoList />} />
         </Routes>
       </BrowserRouter>

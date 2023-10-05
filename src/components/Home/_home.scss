@@ -3,10 +3,31 @@ html {
 }
 
 .card{
-    box-shadow: 5px 7px #ccc;
-    transition: 1s;
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    transition: 2s ease;
+
 }
 
-.card:hover {
-    transform: rotate3d(5, 1, 5, 2turn);
+.cardFront{
+
+  // -webkit-backface-visibility: hidden;
+  //           backface-visibility: hidden;
 }
+
+.cardBack {
+
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.rotate:hover .cardFront{
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  transform: rotate3d(0, 1, 0, 1turn) rotate3d(2, 10, 2, 1turn) rotate3d(0, 1, 0, 1turn) translate(0, -50px) scale(1.6) rotateY(180deg);
+
+}
+
+.rotate:hover .cardBack{
+    transform: rotate3d(0, 1, 0, 1turn) rotate3d(2, 10, 2, 1turn) rotate3d(0, 1, 0, 1turn) translate(0, -50px) scale(1.6) rotateY(180deg);
+
+}
+
